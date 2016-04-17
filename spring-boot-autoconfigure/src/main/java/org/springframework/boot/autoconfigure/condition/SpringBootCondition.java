@@ -39,7 +39,7 @@ import org.springframework.util.StringUtils;
 public abstract class SpringBootCondition implements Condition {
 
 	private final Log logger = LogFactory.getLog(getClass());
-	protected final String prefix = null;
+	protected String prefix = null;
 	protected final Class<?> annotationType = null;
 
 	@Override
