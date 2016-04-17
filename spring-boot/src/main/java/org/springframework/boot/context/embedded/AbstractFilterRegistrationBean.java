@@ -68,6 +68,8 @@ abstract class AbstractFilterRegistrationBean extends RegistrationBean {
 
 	private boolean matchAfter = false;
 
+	protected boolean enabled = true;
+
 	/**
 	 * Create a new instance to be registered with the specified
 	 * {@link ServletRegistrationBean}s.
@@ -274,6 +276,22 @@ abstract class AbstractFilterRegistrationBean extends RegistrationBean {
 						this.urlPatterns.toArray(new String[this.urlPatterns.size()]));
 			}
 		}
+	}
+
+	/**
+	 * Flag to indicate that the registration is enabled.
+	 * @param enabled the enabled to set
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	/**
+	 * Return if the registration is enabled.
+	 * @return if enabled (default {@code true})
+	 */
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 
 }

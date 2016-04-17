@@ -28,7 +28,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link ArrayDocumentMatcher}.
+ * Tests for {@link ArrayDocumentMatcherNew}.
  *
  * @author Dave Syer
  */
@@ -36,21 +36,21 @@ public class ArrayDocumentMatcherTests {
 
 	@Test
 	public void testMatchesSingleValue() throws IOException {
-		ArrayDocumentMatcher matcher = new ArrayDocumentMatcher("foo", "bar");
+		ArrayDocumentMatcherNew matcher = new ArrayDocumentMatcherNew("foo", "bar");
 		assertThat(matcher.matches(getProperties("foo: bar")))
 				.isEqualTo(MatchStatus.FOUND);
 	}
 
 	@Test
 	public void testDoesNotMatchesIndexedArray() throws IOException {
-		ArrayDocumentMatcher matcher = new ArrayDocumentMatcher("foo", "bar");
+		ArrayDocumentMatcherNew matcher = new ArrayDocumentMatcherNew("foo", "bar");
 		assertThat(matcher.matches(getProperties("foo[0]: bar\nfoo[1]: spam")))
 				.isEqualTo(MatchStatus.ABSTAIN);
 	}
 
 	@Test
 	public void testMatchesCommaSeparatedArray() throws IOException {
-		ArrayDocumentMatcher matcher = new ArrayDocumentMatcher("foo", "bar");
+		ArrayDocumentMatcherNew matcher = new ArrayDocumentMatcherNew("foo", "bar");
 		assertThat(matcher.matches(getProperties("foo: bar,spam")))
 				.isEqualTo(MatchStatus.FOUND);
 	}

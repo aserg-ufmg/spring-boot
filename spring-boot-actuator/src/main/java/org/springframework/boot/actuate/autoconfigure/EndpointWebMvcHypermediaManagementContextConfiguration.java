@@ -34,7 +34,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.EndpointWebMvcHypermediaManagementContextConfiguration.EndpointHypermediaEnabledCondition;
 import org.springframework.boot.actuate.condition.ConditionalOnEnabledEndpoint;
-import org.springframework.boot.actuate.endpoint.mvc.DocsMvcEndpoint;
+import org.springframework.boot.actuate.endpoint.DocsMvcEndpoint;
 import org.springframework.boot.actuate.endpoint.mvc.HalBrowserMvcEndpoint;
 import org.springframework.boot.actuate.endpoint.mvc.HalJsonMvcEndpoint;
 import org.springframework.boot.actuate.endpoint.mvc.HypermediaDisabled;

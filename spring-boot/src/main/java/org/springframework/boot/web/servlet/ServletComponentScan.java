@@ -46,7 +46,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(ServletComponentScanRegistrar.class)
+@Import(ServletComponentScanRegistrarRenamed.class)
 public @interface ServletComponentScan {
 
 	/**

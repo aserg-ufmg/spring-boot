@@ -195,7 +195,7 @@ public class TomcatEmbeddedServletContainerFactory
 		if (isRegisterDefaultServlet()) {
 			addDefaultServlet(context);
 		}
-		if (shouldRegisterJspServlet()) {
+		if (compression.shouldRegisterJspServlet(this)) {
 			addJspServlet(context);
 			addJasperInitializer(context);
 			context.addLifecycleListener(new StoreMergedWebXmlListener());

@@ -79,7 +79,7 @@ public class ElasticsearchHealthIndicatorTests {
 		ArgumentCaptor<ClusterHealthRequest> requestCaptor = ArgumentCaptor
 				.forClass(ClusterHealthRequest.class);
 		given(this.cluster.health(requestCaptor.capture())).willReturn(responseFuture);
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(responseFuture.getTimeout).isEqualTo(100L);
 		assertThat(requestCaptor.getValue().indices()).contains("_all");
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -94,7 +94,7 @@ public class ElasticsearchHealthIndicatorTests {
 		given(this.cluster.health(requestCaptor.capture())).willReturn(responseFuture);
 		this.properties.getIndices()
 				.addAll(Arrays.asList("test-index-1", "test-index-2"));
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(requestCaptor.getValue().indices()).contains("test-index-1",
 				"test-index-2");
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -118,7 +118,7 @@ public class ElasticsearchHealthIndicatorTests {
 		responseFuture.onResponse(new StubClusterHealthResponse());
 		given(this.cluster.health(any(ClusterHealthRequest.class)))
 				.willReturn(responseFuture);
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		Map<String, Object> details = health.getDetails();
 		assertDetail(details, "clusterName", "test-cluster");
@@ -155,7 +155,7 @@ public class ElasticsearchHealthIndicatorTests {
 		PlainActionFuture<ClusterHealthResponse> responseFuture = new PlainActionFuture<ClusterHealthResponse>();
 		given(this.cluster.health(any(ClusterHealthRequest.class)))
 				.willReturn(responseFuture);
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat((String) health.getDetails().get("error"))
 				.contains(ElasticsearchTimeoutException.class.getName());

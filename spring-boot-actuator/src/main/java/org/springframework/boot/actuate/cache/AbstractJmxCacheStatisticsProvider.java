@@ -16,17 +16,11 @@
 
 package org.springframework.boot.actuate.cache;
 
-import java.lang.management.ManagementFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.management.AttributeNotFoundException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
-import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.management.ReflectionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,10 +39,8 @@ import org.springframework.cache.CacheManager;
 public abstract class AbstractJmxCacheStatisticsProvider<C extends Cache>
 		implements CacheStatisticsProvider<C> {
 
-	private static final Logger logger = LoggerFactory
+	protected static final Logger logger = LoggerFactory
 			.getLogger(AbstractJmxCacheStatisticsProvider.class);
-
-	private MBeanServer mBeanServer;
 
 	private Map<String, ObjectNameWrapper> caches = new ConcurrentHashMap<String, ObjectNameWrapper>();
 
@@ -92,35 +84,6 @@ public abstract class AbstractJmxCacheStatisticsProvider<C extends Cache>
 		ObjectName objectName = getObjectName(cache);
 		this.caches.put(cacheName, new ObjectNameWrapper(objectName));
 		return objectName;
-	}
-
-	protected MBeanServer getMBeanServer() {
-		if (this.mBeanServer == null) {
-			this.mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		}
-		return this.mBeanServer;
-	}
-
-	protected <T> T getAttribute(ObjectName objectName, String attributeName,
-			Class<T> type) {
-		try {
-			Object attribute = getMBeanServer().getAttribute(objectName, attributeName);
-			return type.cast(attribute);
-		}
-		catch (MBeanException ex) {
-			throw new IllegalStateException(ex);
-		}
-		catch (AttributeNotFoundException ex) {
-			throw new IllegalStateException("Unexpected: MBean with name '" + objectName
-					+ "' " + "does not expose attribute with name " + attributeName, ex);
-		}
-		catch (ReflectionException ex) {
-			throw new IllegalStateException(ex);
-		}
-		catch (InstanceNotFoundException ex) {
-			logger.warn("Cache statistics are no longer available", ex);
-			return null;
-		}
 	}
 
 	private static class ObjectNameWrapper {

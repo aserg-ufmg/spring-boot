@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link WhitespaceThrowablePatternConverter}.
+ * Tests for {@link WhitespaceThrowablePatternConverterRenamed}.
  *
  * @author Vladimir Tsanev
  */
@@ -32,7 +32,7 @@ public class WhitespaceThrowablePatternConverterTests {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-	private final ThrowablePatternConverter converter = WhitespaceThrowablePatternConverter
+	private final ThrowablePatternConverter converter = WhitespaceThrowablePatternConverterRenamed
 			.newInstance(new String[] {});
 
 	@Test

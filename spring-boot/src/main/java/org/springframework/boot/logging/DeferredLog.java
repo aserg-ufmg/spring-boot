@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.context.config.ConfigFileApplicationListener;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
+import org.springframework.context.ApplicationEvent;
 
 /**
  * Deferred {@link Log} that can be used to store messages that shouldn't be written until
@@ -136,6 +139,11 @@ public class DeferredLog implements Log {
 			line.replayTo(destination);
 		}
 		this.lines.clear();
+	}
+
+	public void onApplicationPreparedEvent(ConfigFileApplicationListener configFileApplicationListener, ApplicationEvent event) {
+		replayTo(ConfigFileApplicationListener.class);
+		configFileApplicationListener.addPostProcessors(((ApplicationPreparedEvent) event).getApplicationContext());
 	}
 
 	public static Log replay(Log source, Class<?> destination) {

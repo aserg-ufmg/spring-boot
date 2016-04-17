@@ -65,20 +65,15 @@ class AutoConfigurationSorter {
 				return (i1 < i2) ? -1 : (i1 > i2) ? 1 : 0;
 			}
 		});
-		// Then respect @AutoConfigureBefore @AutoConfigureAfter
-		orderedClassNames = sortByAnnotation(classes, orderedClassNames);
-		return orderedClassNames;
-	}
-
-	private List<String> sortByAnnotation(AutoConfigurationClasses classes,
-			List<String> classNames) {
-		List<String> toSort = new ArrayList<String>(classNames);
+		List<String> toSort = new ArrayList<String>(orderedClassNames);
 		Set<String> sorted = new LinkedHashSet<String>();
 		Set<String> processing = new LinkedHashSet<String>();
 		while (!toSort.isEmpty()) {
 			doSortByAfterAnnotation(classes, toSort, sorted, processing, null);
 		}
-		return new ArrayList<String>(sorted);
+		// Then respect @AutoConfigureBefore @AutoConfigureAfter
+		orderedClassNames = new ArrayList<String>(sorted);
+		return orderedClassNames;
 	}
 
 	private void doSortByAfterAnnotation(AutoConfigurationClasses classes,

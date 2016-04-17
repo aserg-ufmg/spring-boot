@@ -71,7 +71,7 @@ public class SolrHealthIndicatorTests {
 		pingResponse.setResponse(response);
 		given(solrClient.ping()).willReturn(pingResponse);
 		SolrHealthIndicator healthIndicator = new SolrHealthIndicator(solrClient);
-		Health health = healthIndicator.health();
+		HealthInterface health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("solrStatus")).isEqualTo("OK");
 	}
@@ -81,7 +81,7 @@ public class SolrHealthIndicatorTests {
 		SolrClient solrClient = mock(SolrClient.class);
 		given(solrClient.ping()).willThrow(new IOException("Connection failed"));
 		SolrHealthIndicator healthIndicator = new SolrHealthIndicator(solrClient);
-		Health health = healthIndicator.health();
+		HealthInterface health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(((String) health.getDetails().get("error"))
 				.contains("Connection failed"));

@@ -35,7 +35,9 @@ public class EhCacheStatisticsProvider implements CacheStatisticsProvider<EhCach
 		DefaultCacheStatistics statistics = new DefaultCacheStatistics();
 		StatisticsGateway ehCacheStatistics = cache.getNativeCache().getStatistics();
 		statistics.setSize(ehCacheStatistics.getSize());
-		double hitRatio = cacheHitRatio(ehCacheStatistics);
+		long hitCount = ehCacheStatistics.cacheHitCount();
+		long cacheMissCount = ehCacheStatistics.cacheMissCount();
+		double hitRatio = ((double) hitCount) / (hitCount + cacheMissCount);
 		if (!Double.isNaN(hitRatio)) {
 			// ratio is calculated 'racily' and can drift marginally above unity,
 			// so we cap it here
@@ -44,12 +46,6 @@ public class EhCacheStatisticsProvider implements CacheStatisticsProvider<EhCach
 			statistics.setMissRatio(1 - sanitizedHitRatio);
 		}
 		return statistics;
-	}
-
-	private double cacheHitRatio(StatisticsGateway stats) {
-		long hitCount = stats.cacheHitCount();
-		long cacheMissCount = stats.cacheMissCount();
-		return ((double) hitCount) / (hitCount + cacheMissCount);
 	}
 
 }

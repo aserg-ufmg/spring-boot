@@ -82,10 +82,10 @@ public class RelaxedDataBinder extends DataBinder {
 	public RelaxedDataBinder(Object target, String namePrefix) {
 		super(wrapTarget(target),
 				(StringUtils.hasLength(namePrefix) ? namePrefix : DEFAULT_OBJECT_NAME));
-		this.namePrefix = cleanNamePrefix(namePrefix);
+		this.namePrefix = cleanNamePrefixRenamed(namePrefix);
 	}
 
-	private String cleanNamePrefix(String namePrefix) {
+	private String cleanNamePrefixRenamed(String namePrefix) {
 		if (!StringUtils.hasLength(namePrefix)) {
 			return null;
 		}
@@ -98,7 +98,7 @@ public class RelaxedDataBinder extends DataBinder {
 	 * don't want to ignore unknown fields.
 	 * @param ignoreNestedProperties the flag to set (default false)
 	 */
-	public void setIgnoreNestedProperties(boolean ignoreNestedProperties) {
+	public void setIgnoreNestedPropertiesRenamed(boolean ignoreNestedProperties) {
 		this.ignoreNestedProperties = ignoreNestedProperties;
 	}
 
@@ -106,7 +106,7 @@ public class RelaxedDataBinder extends DataBinder {
 	 * Set name aliases.
 	 * @param aliases a map of property name to aliases
 	 */
-	public void setNameAliases(Map<String, List<String>> aliases) {
+	public void setNameAliasesRenamed(Map<String, List<String>> aliases) {
 		this.nameAliases = new LinkedMultiValueMap<String, String>(aliases);
 	}
 
@@ -679,9 +679,9 @@ public class RelaxedDataBinder extends DataBinder {
 	/**
 	 * Extended version of {@link BeanWrapperImpl} to support relaxed binding.
 	 */
-	private static class RelaxedBeanWrapper extends BeanWrapperImpl {
+	static class RelaxedBeanWrapper extends BeanWrapperImpl {
 
-		private static final Set<String> BENIGN_PROPERTY_SOURCE_NAMES;
+		static final Set<String> BENIGN_PROPERTY_SOURCE_NAMES;
 
 		static {
 			Set<String> names = new HashSet<String>();
@@ -701,7 +701,7 @@ public class RelaxedDataBinder extends DataBinder {
 			}
 			catch (NotWritablePropertyException ex) {
 				PropertyOrigin origin = OriginCapablePropertyValue.getOrigin(pv);
-				if (isBenign(origin)) {
+				if (origin.isBenign()) {
 					logger.debug("Ignoring benign property binding failure", ex);
 					return;
 				}
@@ -710,11 +710,6 @@ public class RelaxedDataBinder extends DataBinder {
 				}
 				throw new RelaxedBindingNotWritablePropertyException(ex, origin);
 			}
-		}
-
-		private boolean isBenign(PropertyOrigin origin) {
-			String name = (origin == null ? null : origin.getSource().getName());
-			return BENIGN_PROPERTY_SOURCE_NAMES.contains(name);
 		}
 
 	}

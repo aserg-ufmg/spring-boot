@@ -45,6 +45,7 @@ public abstract class Launcher {
 	 */
 	private static final String RUNNER_CLASS = Launcher.class.getPackage().getName()
 			+ ".MainMethodRunner";
+	protected Archive archive = null;
 
 	/**
 	 * Launch the application. This method is the initial entry point that should be

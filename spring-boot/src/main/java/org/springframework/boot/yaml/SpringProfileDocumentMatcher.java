@@ -58,7 +58,7 @@ public class SpringProfileDocumentMatcher implements DocumentMatcher {
 		if (profiles.length == 0) {
 			profiles = DEFAULT_PROFILES;
 		}
-		return new ArrayDocumentMatcher("spring.profiles", profiles).matches(properties);
+		return new ArrayDocumentMatcherNew("spring.profiles", profiles).matches(properties);
 	}
 
 }

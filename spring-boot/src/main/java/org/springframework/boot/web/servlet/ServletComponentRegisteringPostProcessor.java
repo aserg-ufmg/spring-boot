@@ -38,7 +38,7 @@ import org.springframework.context.annotation.ScannedGenericBeanDefinition;
  *
  * @author Andy Wilkinson
  * @see ServletComponentScan
- * @see ServletComponentScanRegistrar
+ * @see ServletComponentScanRegistrarRenamed
  */
 class ServletComponentRegisteringPostProcessor
 		implements BeanFactoryPostProcessor, ApplicationContextAware {

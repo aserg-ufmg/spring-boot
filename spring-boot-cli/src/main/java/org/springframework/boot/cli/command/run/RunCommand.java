@@ -92,6 +92,12 @@ public class RunCommand extends OptionParsingCommand {
 						"Already running. Please stop the current application before running another (use the 'stop' command).");
 			}
 
+			aux(options);
+
+			return ExitStatus.OK;
+		}
+
+		private void aux(OptionSet options) throws Exception {
 			SourceOptions sourceOptions = new SourceOptions(options);
 
 			List<RepositoryConfiguration> repositoryConfiguration = RepositoryConfigurationFactory
@@ -105,8 +111,6 @@ public class RunCommand extends OptionParsingCommand {
 			this.runner = new SpringApplicationRunner(configuration,
 					sourceOptions.getSourcesArray(), sourceOptions.getArgsArray());
 			this.runner.compileAndRun();
-
-			return ExitStatus.OK;
 		}
 
 		/**

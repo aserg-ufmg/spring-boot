@@ -259,7 +259,7 @@ public class PropertiesConfigurationFactory<T>
 		if (this.conversionService != null) {
 			dataBinder.setConversionService(this.conversionService);
 		}
-		dataBinder.setIgnoreNestedProperties(this.ignoreNestedProperties);
+		dataBinder.setIgnoreNestedPropertiesRenamed(this.ignoreNestedProperties);
 		dataBinder.setIgnoreInvalidFields(this.ignoreInvalidFields);
 		dataBinder.setIgnoreUnknownFields(this.ignoreUnknownFields);
 		customizeBinder(dataBinder);

@@ -43,6 +43,8 @@ public abstract class AbstractEmbeddedServletContainerFactory
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	private String displayName;
+
 	private static final String[] COMMON_DOC_ROOTS = { "src/main/webapp", "public",
 			"static" };
 
@@ -183,6 +185,15 @@ public abstract class AbstractEmbeddedServletContainerFactory
 							+ System.getProperty("java.io.tmpdir"),
 					ex);
 		}
+	}
+
+	@Override
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDisplayName() {
+		return this.displayName;
 	}
 
 }

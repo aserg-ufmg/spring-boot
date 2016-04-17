@@ -70,7 +70,6 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
@@ -189,7 +188,7 @@ public class SpringApplication {
 		SERVLET_ENVIRONMENT_SOURCE_NAMES = Collections.unmodifiableSet(names);
 	}
 
-	private static final Log logger = LogFactory.getLog(SpringApplication.class);
+	static final Log logger = LogFactory.getLog(SpringApplication.class);
 
 	private final Set<Object> sources = new LinkedHashSet<Object>();
 
@@ -323,7 +322,7 @@ public class SpringApplication {
 			return context;
 		}
 		catch (Throwable ex) {
-			handleRunFailure(context, listeners, ex);
+			listeners.handleRunFailure(context, this, ex);
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -816,27 +815,7 @@ public class SpringApplication {
 		}
 	}
 
-	private void handleRunFailure(ConfigurableApplicationContext context,
-			SpringApplicationRunListeners listeners, Throwable exception) {
-		try {
-			try {
-				handleExitCode(context, exception);
-				listeners.finished(context, exception);
-			}
-			finally {
-				reportFailure(exception, context);
-				if (context != null) {
-					context.close();
-				}
-			}
-		}
-		catch (Exception ex) {
-			logger.warn("Unable to close ApplicationContext", ex);
-		}
-		ReflectionUtils.rethrowRuntimeException(exception);
-	}
-
-	private void reportFailure(Throwable failure,
+	void reportFailure(Throwable failure,
 			ConfigurableApplicationContext context) {
 		try {
 			if (FailureAnalyzers.analyzeAndReport(failure, getClass().getClassLoader(),
@@ -866,7 +845,7 @@ public class SpringApplication {
 		}
 	}
 
-	private void handleExitCode(ConfigurableApplicationContext context,
+	void handleExitCode(ConfigurableApplicationContext context,
 			Throwable exception) {
 		int exitCode = getExitCodeFromException(context, exception);
 		if (exitCode != 0) {
