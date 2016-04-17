@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.boot.bind.RelaxedPropertyResolver;
+import org.springframework.core.env.Environment;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
@@ -98,6 +100,18 @@ public abstract class LoggingSystem {
 	 * @param level the log level
 	 */
 	public abstract void setLogLevel(String loggerName, LogLevel level);
+
+	void registerShutdownHookIfNecessary(Environment environment, LoggingApplicationListener loggingApplicationListener) {
+		boolean registerShutdownHook = new RelaxedPropertyResolver(environment)
+				.getProperty(LoggingApplicationListener.REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, false);
+		if (registerShutdownHook) {
+			Runnable shutdownHandler = getShutdownHandler();
+			if (shutdownHandler != null
+					&& LoggingApplicationListener.shutdownHookRegistered.compareAndSet(false, true)) {
+				loggingApplicationListener.registerShutdownHook(new Thread(shutdownHandler));
+			}
+		}
+	}
 
 	/**
 	 * Detect and return the logging system in use. Supports Logback and Java Logging.

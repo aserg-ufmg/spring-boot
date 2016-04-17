@@ -47,7 +47,7 @@ import org.springframework.boot.ansi.AnsiStyle;
  */
 @Plugin(name = "color", category = PatternConverter.CATEGORY)
 @ConverterKeys({ "clr", "color" })
-public final class ColorConverter extends LogEventPatternConverter {
+public final class ColorConverterRenamed extends LogEventPatternConverter {
 
 	private static final Map<String, AnsiElement> ELEMENTS;
 
@@ -77,7 +77,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 
 	private final AnsiElement styling;
 
-	private ColorConverter(List<PatternFormatter> formatters, AnsiElement styling) {
+	private ColorConverterRenamed(List<PatternFormatter> formatters, AnsiElement styling) {
 		super("style", "style");
 		this.formatters = formatters;
 		this.styling = styling;
@@ -90,7 +90,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 	 * @param options the options
 	 * @return a new instance, or {@code null} if the options are invalid
 	 */
-	public static ColorConverter newInstance(Configuration config, String[] options) {
+	public static ColorConverterRenamed newInstance(Configuration config, String[] options) {
 		if (options.length < 1) {
 			LOGGER.error("Incorrect number of options on style. "
 					+ "Expected at least 1, received {}", options.length);
@@ -103,7 +103,7 @@ public final class ColorConverter extends LogEventPatternConverter {
 		PatternParser parser = PatternLayout.createPatternParser(config);
 		List<PatternFormatter> formatters = parser.parse(options[0]);
 		AnsiElement element = (options.length == 1 ? null : ELEMENTS.get(options[1]));
-		return new ColorConverter(formatters, element);
+		return new ColorConverterRenamed(formatters, element);
 	}
 
 	@Override

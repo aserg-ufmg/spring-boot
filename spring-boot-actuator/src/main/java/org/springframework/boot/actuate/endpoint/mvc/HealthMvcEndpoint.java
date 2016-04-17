@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.springframework.boot.actuate.endpoint.HealthEndpoint;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthInterface;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.bind.RelaxedNames;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -141,7 +142,7 @@ public class HealthMvcEndpoint extends AbstractEndpointMvcAdapter<HealthEndpoint
 		return health;
 	}
 
-	private HttpStatus getStatus(Health health) {
+	private HttpStatus getStatus(HealthInterface health) {
 		String code = health.getStatus().getCode();
 		if (code != null) {
 			code = code.toLowerCase().replace("_", "-");

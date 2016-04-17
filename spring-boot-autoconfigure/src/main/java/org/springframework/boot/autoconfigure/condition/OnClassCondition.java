@@ -80,11 +80,6 @@ class OnClassCondition extends SpringBootCondition {
 		return ConditionOutcome.match(matchMessage.toString());
 	}
 
-	private MultiValueMap<String, Object> getAttributes(AnnotatedTypeMetadata metadata,
-			Class<?> annotationType) {
-		return metadata.getAllAnnotationAttributes(annotationType.getName(), true);
-	}
-
 	private List<String> getMatchingClasses(MultiValueMap<String, Object> attributes,
 			MatchType matchType, ConditionContext context) {
 		List<String> matches = new LinkedList<String>();

@@ -26,6 +26,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 /**
@@ -38,6 +39,8 @@ import org.springframework.util.StringUtils;
 public abstract class SpringBootCondition implements Condition {
 
 	private final Log logger = LogFactory.getLog(getClass());
+	protected final String prefix = null;
+	protected final Class<?> annotationType = null;
 
 	@Override
 	public final boolean matches(ConditionContext context,
@@ -156,6 +159,10 @@ public abstract class SpringBootCondition implements Condition {
 					.isMatch();
 		}
 		return condition.matches(context, metadata);
+	}
+
+	protected MultiValueMap<String, Object> getAttributes(AnnotatedTypeMetadata metadata, Class<?> annotationType) {
+		return metadata.getAllAnnotationAttributes(annotationType.getName(), true);
 	}
 
 }

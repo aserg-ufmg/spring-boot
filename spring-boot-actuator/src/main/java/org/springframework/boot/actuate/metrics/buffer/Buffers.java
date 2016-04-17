@@ -59,6 +59,11 @@ abstract class Buffers<B extends Buffer<?>> {
 	}
 
 	protected final void doWith(final String name, final Consumer<B> consumer) {
+		B buffer = test(name);
+		consumer.accept(buffer);
+	}
+
+	private B test(final String name) {
 		B buffer = this.buffers.get(name);
 		if (buffer == null) {
 			buffer = this.buffers.computeIfAbsent(name, new Function<String, B>() {
@@ -68,7 +73,7 @@ abstract class Buffers<B extends Buffer<?>> {
 				}
 			});
 		}
-		consumer.accept(buffer);
+		return buffer;
 	}
 
 	protected abstract B createBuffer();

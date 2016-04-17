@@ -118,9 +118,9 @@ public class CloudFoundryVcapEnvironmentPostProcessor
 			SpringApplication application) {
 		if (CloudPlatform.CLOUD_FOUNDRY.isActive(environment)) {
 			Properties properties = new Properties();
-			addWithPrefix(properties, getPropertiesFromApplication(environment),
+			addWithPrefixNew(properties, getPropertiesFromApplication(environment),
 					"vcap.application.");
-			addWithPrefix(properties, getPropertiesFromServices(environment),
+			addWithPrefixNew(properties, getPropertiesFromServices(environment),
 					"vcap.services.");
 			MutablePropertySources propertySources = environment.getPropertySources();
 			if (propertySources.contains(
@@ -136,7 +136,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor
 		}
 	}
 
-	private void addWithPrefix(Properties properties, Properties other, String prefix) {
+	private void addWithPrefixNew(Properties properties, Properties other, String prefix) {
 		for (String key : other.stringPropertyNames()) {
 			String prefixed = prefix + key;
 			properties.setProperty(prefixed, other.getProperty(key));
@@ -148,7 +148,9 @@ public class CloudFoundryVcapEnvironmentPostProcessor
 		try {
 			String property = environment.getProperty(VCAP_APPLICATION, "{}");
 			Map<String, Object> map = this.parser.parseMap(property);
-			extractPropertiesFromApplication(properties, map);
+			if (map != null) {
+				flatten(properties, map, "");
+			}
 		}
 		catch (Exception ex) {
 			logger.error("Could not parse VCAP_APPLICATION", ex);
@@ -167,13 +169,6 @@ public class CloudFoundryVcapEnvironmentPostProcessor
 			logger.error("Could not parse VCAP_SERVICES", ex);
 		}
 		return properties;
-	}
-
-	private void extractPropertiesFromApplication(Properties properties,
-			Map<String, Object> map) {
-		if (map != null) {
-			flatten(properties, map, "");
-		}
 	}
 
 	private void extractPropertiesFromServices(Properties properties,

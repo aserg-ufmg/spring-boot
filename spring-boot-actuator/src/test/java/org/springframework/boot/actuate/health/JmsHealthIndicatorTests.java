@@ -45,7 +45,7 @@ public class JmsHealthIndicatorTests {
 		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		given(connectionFactory.createConnection()).willReturn(connection);
 		JmsHealthIndicator indicator = new JmsHealthIndicator(connectionFactory);
-		Health health = indicator.health();
+		HealthInterface health = indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("provider")).isEqualTo("JMS test provider");
 		verify(connection, times(1)).close();
@@ -57,7 +57,7 @@ public class JmsHealthIndicatorTests {
 		given(connectionFactory.createConnection())
 				.willThrow(new JMSException("test", "123"));
 		JmsHealthIndicator indicator = new JmsHealthIndicator(connectionFactory);
-		Health health = indicator.health();
+		HealthInterface health = indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(health.getDetails().get("provider")).isNull();
 	}
@@ -72,7 +72,7 @@ public class JmsHealthIndicatorTests {
 		ConnectionFactory connectionFactory = mock(ConnectionFactory.class);
 		given(connectionFactory.createConnection()).willReturn(connection);
 		JmsHealthIndicator indicator = new JmsHealthIndicator(connectionFactory);
-		Health health = indicator.health();
+		HealthInterface health = indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(health.getDetails().get("provider")).isNull();
 		verify(connection, times(1)).close();

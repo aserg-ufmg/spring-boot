@@ -16,6 +16,8 @@
 
 package org.springframework.boot.diagnostics;
 
+import org.springframework.util.StringUtils;
+
 /**
  * The result of analyzing a failure.
  *
@@ -66,6 +68,21 @@ public class FailureAnalysis {
 	 */
 	public Throwable getCause() {
 		return this.cause;
+	}
+
+	String buildMessage() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(String.format("%n%n"));
+		builder.append(String.format("***************************%n"));
+		builder.append(String.format("APPLICATION FAILED TO START%n"));
+		builder.append(String.format("***************************%n%n"));
+		builder.append(String.format("Description:%n%n"));
+		builder.append(String.format("%s%n", getDescription()));
+		if (StringUtils.hasText(getAction())) {
+			builder.append(String.format("%nAction:%n%n"));
+			builder.append(String.format("%s%n", getAction()));
+		}
+		return builder.toString();
 	}
 
 }

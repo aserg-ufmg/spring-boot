@@ -43,14 +43,14 @@ public class HealthTests {
 
 	@Test
 	public void createWithStatus() throws Exception {
-		Health health = Health.status(Status.UP).build();
+		HealthInterface health = Health.status(Status.UP).build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
 
 	@Test
 	public void createWithDetails() throws Exception {
-		Health health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
+		HealthInterface health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
 				.build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("a")).isEqualTo("b");
@@ -60,9 +60,9 @@ public class HealthTests {
 	public void equalsAndHashCode() throws Exception {
 		Health h1 = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
 				.build();
-		Health h2 = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
+		HealthInterface h2 = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
 				.build();
-		Health h3 = new Health.Builder(Status.UP).build();
+		HealthInterface h3 = new Health.Builder(Status.UP).build();
 		assertThat(h1).isEqualTo(h1);
 		assertThat(h1).isEqualTo(h2);
 		assertThat(h1).isNotEqualTo(h3);
@@ -74,7 +74,7 @@ public class HealthTests {
 	@Test
 	public void withException() throws Exception {
 		RuntimeException ex = new RuntimeException("bang");
-		Health health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
+		HealthInterface health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
 				.withException(ex).build();
 		assertThat(health.getDetails().get("a")).isEqualTo("b");
 		assertThat(health.getDetails().get("error"))
@@ -83,7 +83,7 @@ public class HealthTests {
 
 	@Test
 	public void withDetails() throws Exception {
-		Health health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
+		HealthInterface health = new Health.Builder(Status.UP, Collections.singletonMap("a", "b"))
 				.withDetail("c", "d").build();
 		assertThat(health.getDetails().get("a")).isEqualTo("b");
 		assertThat(health.getDetails().get("c")).isEqualTo("d");
@@ -91,28 +91,28 @@ public class HealthTests {
 
 	@Test
 	public void unknownWithDetails() throws Exception {
-		Health health = new Health.Builder().unknown().withDetail("a", "b").build();
+		HealthInterface health = new Health.Builder().unknown().withDetail("a", "b").build();
 		assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
 		assertThat(health.getDetails().get("a")).isEqualTo("b");
 	}
 
 	@Test
 	public void unknown() throws Exception {
-		Health health = new Health.Builder().unknown().build();
+		HealthInterface health = new Health.Builder().unknown().build();
 		assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
 
 	@Test
 	public void upWithDetails() throws Exception {
-		Health health = new Health.Builder().up().withDetail("a", "b").build();
+		HealthInterface health = new Health.Builder().up().withDetail("a", "b").build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("a")).isEqualTo("b");
 	}
 
 	@Test
 	public void up() throws Exception {
-		Health health = new Health.Builder().up().build();
+		HealthInterface health = new Health.Builder().up().build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
@@ -120,7 +120,7 @@ public class HealthTests {
 	@Test
 	public void downWithException() throws Exception {
 		RuntimeException ex = new RuntimeException("bang");
-		Health health = Health.down(ex).build();
+		HealthInterface health = Health.down(ex).build();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(health.getDetails().get("error"))
 				.isEqualTo("java.lang.RuntimeException: bang");
@@ -128,28 +128,28 @@ public class HealthTests {
 
 	@Test
 	public void down() throws Exception {
-		Health health = Health.down().build();
+		HealthInterface health = Health.down().build();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
 
 	@Test
 	public void outOfService() throws Exception {
-		Health health = Health.outOfService().build();
+		HealthInterface health = Health.outOfService().build();
 		assertThat(health.getStatus()).isEqualTo(Status.OUT_OF_SERVICE);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
 
 	@Test
 	public void statusCode() throws Exception {
-		Health health = Health.status("UP").build();
+		HealthInterface health = Health.status("UP").build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}
 
 	@Test
 	public void status() throws Exception {
-		Health health = Health.status(Status.UP).build();
+		HealthInterface health = Health.status(Status.UP).build();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().size()).isEqualTo(0);
 	}

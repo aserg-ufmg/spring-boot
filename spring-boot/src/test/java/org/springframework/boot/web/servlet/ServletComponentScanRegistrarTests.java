@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link ServletComponentScanRegistrar}
+ * Tests for {@link ServletComponentScanRegistrarRenamed}
  *
  * @author Andy Wilkinson
  */

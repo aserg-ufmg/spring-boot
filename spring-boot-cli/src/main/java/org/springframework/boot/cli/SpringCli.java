@@ -43,6 +43,16 @@ public final class SpringCli {
 		System.setProperty("java.awt.headless", Boolean.toString(true));
 		LogbackInitializer.initialize();
 
+		CommandRunner runner = runner();
+
+		int exitCode = runner.runAndHandleErrors(args);
+		if (exitCode != 0) {
+			// If successful, leave it to run in case it's a server app
+			System.exit(exitCode);
+		}
+	}
+
+	private static CommandRunner runner() {
 		CommandRunner runner = new CommandRunner("spring");
 		runner.addCommand(new HelpCommand(runner));
 		addServiceLoaderCommands(runner);
@@ -50,12 +60,7 @@ public final class SpringCli {
 		runner.addCommand(new HintCommand(runner));
 		runner.setOptionCommands(HelpCommand.class, VersionCommand.class);
 		runner.setHiddenCommands(HintCommand.class);
-
-		int exitCode = runner.runAndHandleErrors(args);
-		if (exitCode != 0) {
-			// If successful, leave it to run in case it's a server app
-			System.exit(exitCode);
-		}
+		return runner;
 	}
 
 	private static void addServiceLoaderCommands(CommandRunner runner) {

@@ -17,6 +17,7 @@
 package org.springframework.boot.cli.command.test;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,18 +150,7 @@ public class TestRunner {
 					System.out.println("No tests found");
 				}
 				else {
-					ClassLoader contextClassLoader = Thread.currentThread()
-							.getContextClassLoader();
-					Class<?> delegateClass = contextClassLoader
-							.loadClass(DelegateTestRunner.class.getName());
-					Class<?> resultClass = contextClassLoader
-							.loadClass("org.junit.runner.Result");
-					Method runMethod = delegateClass.getMethod("run", Class[].class,
-							resultClass);
-					Object result = resultClass.newInstance();
-					runMethod.invoke(null, this.testClasses, result);
-					boolean wasSuccessful = (Boolean) resultClass
-							.getMethod("wasSuccessful").invoke(result);
+					boolean wasSuccessful = verify();
 					if (!wasSuccessful) {
 						throw new RuntimeException("Tests Failed.");
 					}
@@ -169,6 +159,23 @@ public class TestRunner {
 			catch (Exception ex) {
 				ReflectionUtils.rethrowRuntimeException(ex);
 			}
+		}
+
+		private boolean verify() throws ClassNotFoundException, NoSuchMethodException, InstantiationException,
+				IllegalAccessException, InvocationTargetException {
+			ClassLoader contextClassLoader = Thread.currentThread()
+					.getContextClassLoader();
+			Class<?> delegateClass = contextClassLoader
+					.loadClass(DelegateTestRunner.class.getName());
+			Class<?> resultClass = contextClassLoader
+					.loadClass("org.junit.runner.Result");
+			Method runMethod = delegateClass.getMethod("run", Class[].class,
+					resultClass);
+			Object result = resultClass.newInstance();
+			runMethod.invoke(null, this.testClasses, result);
+			boolean wasSuccessful = (Boolean) resultClass
+					.getMethod("wasSuccessful").invoke(result);
+			return wasSuccessful;
 		}
 	}
 

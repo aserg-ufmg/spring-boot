@@ -68,7 +68,7 @@ public class CompositeHealthIndicatorTests {
 		indicators.put("two", this.two);
 		CompositeHealthIndicator composite = new CompositeHealthIndicator(
 				this.healthAggregator, indicators);
-		Health result = composite.health();
+		HealthInterface result = composite.health();
 		assertThat(result.getDetails()).hasSize(2);
 		assertThat(result.getDetails()).containsEntry("one",
 				new Health.Builder().unknown().withDetail("1", "1").build());
@@ -84,7 +84,7 @@ public class CompositeHealthIndicatorTests {
 		CompositeHealthIndicator composite = new CompositeHealthIndicator(
 				this.healthAggregator, indicators);
 		composite.addHealthIndicator("three", this.three);
-		Health result = composite.health();
+		HealthInterface result = composite.health();
 		assertThat(result.getDetails()).hasSize(3);
 		assertThat(result.getDetails()).containsEntry("one",
 				new Health.Builder().unknown().withDetail("1", "1").build());
@@ -100,7 +100,7 @@ public class CompositeHealthIndicatorTests {
 				this.healthAggregator);
 		composite.addHealthIndicator("one", this.one);
 		composite.addHealthIndicator("two", this.two);
-		Health result = composite.health();
+		HealthInterface result = composite.health();
 		assertThat(result.getDetails().size()).isEqualTo(2);
 		assertThat(result.getDetails()).containsEntry("one",
 				new Health.Builder().unknown().withDetail("1", "1").build());
@@ -118,7 +118,7 @@ public class CompositeHealthIndicatorTests {
 		CompositeHealthIndicator composite = new CompositeHealthIndicator(
 				this.healthAggregator);
 		composite.addHealthIndicator("db", innerComposite);
-		Health result = composite.health();
+		HealthInterface result = composite.health();
 		ObjectMapper mapper = new ObjectMapper();
 		assertThat(mapper.writeValueAsString(result))
 				.isEqualTo("{\"status\":\"UNKNOWN\",\"db\":{\"status\":\"UNKNOWN\""

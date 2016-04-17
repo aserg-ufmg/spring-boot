@@ -16,6 +16,7 @@
 
 package org.springframework.boot.bind;
 
+import org.springframework.boot.bind.RelaxedDataBinder.RelaxedBeanWrapper;
 import org.springframework.core.env.PropertySource;
 
 /**
@@ -42,6 +43,11 @@ public class PropertyOrigin {
 
 	public String getName() {
 		return this.name;
+	}
+
+	boolean isBenign() {
+		String name = (this == null ? null : getSource().getName());
+		return RelaxedBeanWrapper.BENIGN_PROPERTY_SOURCE_NAMES.contains(name);
 	}
 
 }

@@ -77,6 +77,8 @@ public class ServletListenerRegistrationBean<T extends EventListener>
 
 	private T listener;
 
+	protected boolean enabled = true;
+
 	/**
 	 * Create a new {@link ServletListenerRegistrationBean} instance.
 	 */
@@ -121,6 +123,22 @@ public class ServletListenerRegistrationBean<T extends EventListener>
 
 	public T getListener() {
 		return this.listener;
+	}
+
+	/**
+	 * Flag to indicate that the registration is enabled.
+	 * @param enabled the enabled to set
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	/**
+	 * Return if the registration is enabled.
+	 * @return if enabled (default {@code true})
+	 */
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 
 	/**

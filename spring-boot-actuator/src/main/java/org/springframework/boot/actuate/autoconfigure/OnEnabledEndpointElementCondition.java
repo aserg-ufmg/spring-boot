@@ -31,13 +31,9 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  */
 abstract class OnEnabledEndpointElementCondition extends SpringBootCondition {
 
-	private final String prefix;
-
-	private final Class<?> annotationType;
-
 	OnEnabledEndpointElementCondition(String prefix, Class<?> annotationType) {
-		this.prefix = prefix;
-		this.annotationType = annotationType;
+		prefix = prefix;
+		annotationType = annotationType;
 	}
 
 	protected String getEndpointElementOutcomeMessage(String name, boolean match) {
