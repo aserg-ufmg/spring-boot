@@ -64,7 +64,7 @@ public class MailHealthIndicatorTests {
 	@Test
 	public void smtpIsUp() {
 		given(this.mailSender.getProtocol()).willReturn("success");
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("location")).isEqualTo("smtp.acme.org:25");
 	}
@@ -73,7 +73,7 @@ public class MailHealthIndicatorTests {
 	public void smtpIsDown() throws MessagingException {
 		willThrow(new MessagingException("A test exception")).given(this.mailSender)
 				.testConnection();
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(health.getDetails().get("location")).isEqualTo("smtp.acme.org:25");
 		Object errorMessage = health.getDetails().get("error");

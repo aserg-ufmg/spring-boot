@@ -31,13 +31,13 @@ import org.springframework.util.StringUtils;
  *
  * @author Dave Syer
  */
-public class ArrayDocumentMatcher implements DocumentMatcher {
+public class ArrayDocumentMatcherNew implements DocumentMatcher {
 
 	private final String key;
 
 	private final String[] patterns;
 
-	public ArrayDocumentMatcher(final String key, final String... patterns) {
+	public ArrayDocumentMatcherNew(final String key, final String... patterns) {
 		this.key = key;
 		this.patterns = patterns;
 

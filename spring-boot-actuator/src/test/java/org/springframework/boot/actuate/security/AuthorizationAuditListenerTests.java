@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
  */
 public class AuthorizationAuditListenerTests {
 
-	private final AuthorizationAuditListener listener = new AuthorizationAuditListener();
+	private final AbstractAuthorizationAuditListener listener = new AuthorizationAuditListener();
 
 	private final ApplicationEventPublisher publisher = mock(
 			ApplicationEventPublisher.class);

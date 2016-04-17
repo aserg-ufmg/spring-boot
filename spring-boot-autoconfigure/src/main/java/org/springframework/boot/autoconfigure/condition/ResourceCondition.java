@@ -33,8 +33,6 @@ public abstract class ResourceCondition extends SpringBootCondition {
 
 	private final String name;
 
-	private final String prefix;
-
 	private final String propertyName;
 
 	private final String[] resourceLocations;

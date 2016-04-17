@@ -21,8 +21,8 @@ import org.junit.Test;
 
 import org.springframework.boot.actuate.endpoint.mvc.HealthMvcEndpoint;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Health.Builder;
+import org.springframework.boot.actuate.health.HealthInterface;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -60,7 +60,7 @@ public class HealthMvcEndpointAutoConfigurationTests {
 		this.context.setServletContext(new MockServletContext());
 		this.context.register(TestConfiguration.class);
 		this.context.refresh();
-		Health health = (Health) this.context.getBean(HealthMvcEndpoint.class)
+		HealthInterface health = (HealthInterface) this.context.getBean(HealthMvcEndpoint.class)
 				.invoke(null);
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("foo")).isNull();
@@ -74,10 +74,10 @@ public class HealthMvcEndpointAutoConfigurationTests {
 		EnvironmentTestUtils.addEnvironment(this.context,
 				"management.security.enabled=false");
 		this.context.refresh();
-		Health health = (Health) this.context.getBean(HealthMvcEndpoint.class)
+		HealthInterface health = (HealthInterface) this.context.getBean(HealthMvcEndpoint.class)
 				.invoke(null);
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
-		Health map = (Health) health.getDetails().get("test");
+		HealthInterface map = (HealthInterface) health.getDetails().get("test");
 		assertThat(map.getDetails().get("foo")).isEqualTo("bar");
 	}
 

@@ -141,7 +141,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 
 	private static MultiValueMap<LogLevel, String> LOG_LEVEL_LOGGERS;
 
-	private static AtomicBoolean shutdownHookRegistered = new AtomicBoolean(false);
+	static AtomicBoolean shutdownHookRegistered = new AtomicBoolean(false);
 
 	static {
 		LOG_LEVEL_LOGGERS = new LinkedMultiValueMap<LogLevel, String>();
@@ -255,7 +255,7 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 		initializeEarlyLoggingLevel(environment);
 		initializeSystem(environment, this.loggingSystem, logFile);
 		initializeFinalLoggingLevels(environment, this.loggingSystem);
-		registerShutdownHookIfNecessary(environment, this.loggingSystem);
+		this.loggingSystem.registerShutdownHookIfNecessary(environment, this);
 	}
 
 	private void initializeEarlyLoggingLevel(ConfigurableEnvironment environment) {
@@ -350,19 +350,6 @@ public class LoggingApplicationListener implements GenericApplicationListener {
 			return LogLevel.OFF;
 		}
 		return LogLevel.valueOf(level.toUpperCase());
-	}
-
-	private void registerShutdownHookIfNecessary(Environment environment,
-			LoggingSystem loggingSystem) {
-		boolean registerShutdownHook = new RelaxedPropertyResolver(environment)
-				.getProperty(REGISTER_SHUTDOWN_HOOK_PROPERTY, Boolean.class, false);
-		if (registerShutdownHook) {
-			Runnable shutdownHandler = loggingSystem.getShutdownHandler();
-			if (shutdownHandler != null
-					&& shutdownHookRegistered.compareAndSet(false, true)) {
-				registerShutdownHook(new Thread(shutdownHandler));
-			}
-		}
 	}
 
 	void registerShutdownHook(Thread shutdownHook) {

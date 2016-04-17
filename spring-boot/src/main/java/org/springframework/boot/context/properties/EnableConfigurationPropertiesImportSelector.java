@@ -73,7 +73,15 @@ class EnableConfigurationPropertiesImportSelector implements ImportSelector {
 			MultiValueMap<String, Object> attributes = metadata
 					.getAllAnnotationAttributes(
 							EnableConfigurationProperties.class.getName(), false);
-			List<Class<?>> types = collectClasses(attributes.get("value"));
+			ArrayList<Class<?>> result = new ArrayList<Class<?>>();
+			for (Object object : attributes.get("value")) {
+				for (Object value : (Object[]) object) {
+					if (value instanceof Class && value != void.class) {
+						result.add((Class<?>) value);
+					}
+				}
+			}
+			List<Class<?>> types = result;
 			for (Class<?> type : types) {
 				String prefix = extractPrefix(type);
 				String name = (StringUtils.hasText(prefix) ? prefix + "-" + type.getName()
@@ -92,18 +100,6 @@ class EnableConfigurationPropertiesImportSelector implements ImportSelector {
 						: annotation.prefix());
 			}
 			return "";
-		}
-
-		private List<Class<?>> collectClasses(List<Object> list) {
-			ArrayList<Class<?>> result = new ArrayList<Class<?>>();
-			for (Object object : list) {
-				for (Object value : (Object[]) object) {
-					if (value instanceof Class && value != void.class) {
-						result.add((Class<?>) value);
-					}
-				}
-			}
-			return result;
 		}
 
 		private void registerBeanDefinition(BeanDefinitionRegistry registry,

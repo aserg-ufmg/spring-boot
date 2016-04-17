@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 
 /**
  * Abstract base class for {@link ConfigurableEmbeddedServletContainer} implementations.
@@ -46,8 +45,6 @@ public abstract class AbstractConfigurableEmbeddedServletContainer
 			.toSeconds(30);
 
 	private String contextPath = "";
-
-	private String displayName;
 
 	private boolean registerDefaultServlet = true;
 
@@ -71,9 +68,9 @@ public abstract class AbstractConfigurableEmbeddedServletContainer
 
 	private Ssl ssl;
 
-	private JspServlet jspServlet = new JspServlet();
+	JspServlet jspServlet = new JspServlet();
 
-	private Compression compression;
+	protected Compression compression;
 
 	private String serverHeader;
 
@@ -131,15 +128,6 @@ public abstract class AbstractConfigurableEmbeddedServletContainer
 	 */
 	public String getContextPath() {
 		return this.contextPath;
-	}
-
-	@Override
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getDisplayName() {
-		return this.displayName;
 	}
 
 	@Override
@@ -328,16 +316,6 @@ public abstract class AbstractConfigurableEmbeddedServletContainer
 		mergedInitializers.addAll(this.initializers);
 		return mergedInitializers
 				.toArray(new ServletContextInitializer[mergedInitializers.size()]);
-	}
-
-	/**
-	 * Returns whether or not the JSP servlet should be registered with the embedded
-	 * container.
-	 * @return {@code true} if the container should be registered, otherwise {@code false}
-	 */
-	protected boolean shouldRegisterJspServlet() {
-		return this.jspServlet != null && this.jspServlet.getRegistered() && ClassUtils
-				.isPresent(this.jspServlet.getClassName(), getClass().getClassLoader());
 	}
 
 }

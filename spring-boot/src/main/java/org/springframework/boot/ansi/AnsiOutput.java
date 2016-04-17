@@ -89,7 +89,11 @@ public abstract class AnsiOutput {
 			buildEnabled(sb, elements);
 		}
 		else {
-			buildDisabled(sb, elements);
+			for (Object element : elements) {
+				if (!(element instanceof AnsiElement) && element != null) {
+					sb.append(element);
+				}
+			}
 		}
 		return sb.toString();
 	}
@@ -120,14 +124,6 @@ public abstract class AnsiOutput {
 			sb.append(writingAnsi ? ENCODE_JOIN : ENCODE_START);
 			sb.append(RESET);
 			sb.append(ENCODE_END);
-		}
-	}
-
-	private static void buildDisabled(StringBuilder sb, Object[] elements) {
-		for (Object element : elements) {
-			if (!(element instanceof AnsiElement) && element != null) {
-				sb.append(element);
-			}
 		}
 	}
 

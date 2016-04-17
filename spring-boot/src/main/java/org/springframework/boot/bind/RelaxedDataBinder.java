@@ -82,10 +82,10 @@ public class RelaxedDataBinder extends DataBinder {
 	public RelaxedDataBinder(Object target, String namePrefix) {
 		super(wrapTarget(target),
 				(StringUtils.hasLength(namePrefix) ? namePrefix : DEFAULT_OBJECT_NAME));
-		this.namePrefix = cleanNamePrefix(namePrefix);
+		this.namePrefix = cleanNamePrefixRenamed(namePrefix);
 	}
 
-	private String cleanNamePrefix(String namePrefix) {
+	private String cleanNamePrefixRenamed(String namePrefix) {
 		if (!StringUtils.hasLength(namePrefix)) {
 			return null;
 		}
@@ -98,7 +98,7 @@ public class RelaxedDataBinder extends DataBinder {
 	 * don't want to ignore unknown fields.
 	 * @param ignoreNestedProperties the flag to set (default false)
 	 */
-	public void setIgnoreNestedProperties(boolean ignoreNestedProperties) {
+	public void setIgnoreNestedPropertiesRenamed(boolean ignoreNestedProperties) {
 		this.ignoreNestedProperties = ignoreNestedProperties;
 	}
 
@@ -106,7 +106,7 @@ public class RelaxedDataBinder extends DataBinder {
 	 * Set name aliases.
 	 * @param aliases a map of property name to aliases
 	 */
-	public void setNameAliases(Map<String, List<String>> aliases) {
+	public void setNameAliasesRenamed(Map<String, List<String>> aliases) {
 		this.nameAliases = new LinkedMultiValueMap<String, String>(aliases);
 	}
 

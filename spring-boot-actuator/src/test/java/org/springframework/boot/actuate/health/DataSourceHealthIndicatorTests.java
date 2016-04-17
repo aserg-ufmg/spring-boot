@@ -63,7 +63,7 @@ public class DataSourceHealthIndicatorTests {
 	@Test
 	public void database() {
 		this.indicator.setDataSource(this.dataSource);
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getDetails().get("database")).isNotNull();
 		assertThat(health.getDetails().get("hello")).isNotNull();
 	}
@@ -74,7 +74,7 @@ public class DataSourceHealthIndicatorTests {
 		new JdbcTemplate(this.dataSource)
 				.execute("CREATE TABLE FOO (id INTEGER IDENTITY PRIMARY KEY)");
 		this.indicator.setQuery("SELECT COUNT(*) from FOO");
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		System.err.println(health);
 		assertThat(health.getDetails().get("database")).isNotNull();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -85,7 +85,7 @@ public class DataSourceHealthIndicatorTests {
 	public void error() {
 		this.indicator.setDataSource(this.dataSource);
 		this.indicator.setQuery("SELECT COUNT(*) from BAR");
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getDetails().get("database")).isNotNull();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 	}
@@ -98,7 +98,7 @@ public class DataSourceHealthIndicatorTests {
 				.willReturn(this.dataSource.getConnection().getMetaData());
 		given(dataSource.getConnection()).willReturn(connection);
 		this.indicator.setDataSource(dataSource);
-		Health health = this.indicator.health();
+		HealthInterface health = this.indicator.health();
 		assertThat(health.getDetails().get("database")).isNotNull();
 		verify(connection, times(2)).close();
 	}

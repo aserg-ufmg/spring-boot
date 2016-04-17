@@ -16,11 +16,17 @@
 
 package org.springframework.boot.actuate.cache;
 
+import java.lang.management.ManagementFactory;
 import java.util.Set;
 
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectInstance;
 import javax.management.ObjectName;
+import javax.management.ReflectionException;
 
 import org.infinispan.spring.provider.SpringCache;
 
@@ -32,6 +38,8 @@ import org.infinispan.spring.provider.SpringCache;
  */
 public class InfinispanCacheStatisticsProvider
 		extends AbstractJmxCacheStatisticsProvider<SpringCache> {
+
+	private MBeanServer mBeanServer;
 
 	@Override
 	protected ObjectName getObjectName(SpringCache cache)
@@ -67,6 +75,34 @@ public class InfinispanCacheStatisticsProvider
 		if ((hitRatio != null)) {
 			statistics.setHitRatio(hitRatio);
 			statistics.setMissRatio(1 - hitRatio);
+		}
+	}
+
+	protected MBeanServer getMBeanServer() {
+		if (this.mBeanServer == null) {
+			this.mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		}
+		return this.mBeanServer;
+	}
+
+	protected <T> T getAttribute(ObjectName objectName, String attributeName, Class<T> type) {
+		try {
+			Object attribute = getMBeanServer().getAttribute(objectName, attributeName);
+			return type.cast(attribute);
+		}
+		catch (MBeanException ex) {
+			throw new IllegalStateException(ex);
+		}
+		catch (AttributeNotFoundException ex) {
+			throw new IllegalStateException("Unexpected: MBean with name '" + objectName
+					+ "' " + "does not expose attribute with name " + attributeName, ex);
+		}
+		catch (ReflectionException ex) {
+			throw new IllegalStateException(ex);
+		}
+		catch (InstanceNotFoundException ex) {
+			logger.warn("Cache statistics are no longer available", ex);
+			return null;
 		}
 	}
 

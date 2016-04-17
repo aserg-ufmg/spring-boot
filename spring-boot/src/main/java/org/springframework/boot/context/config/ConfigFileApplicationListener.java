@@ -153,7 +153,7 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor,
 					(ApplicationEnvironmentPreparedEvent) event);
 		}
 		if (event instanceof ApplicationPreparedEvent) {
-			onApplicationPreparedEvent(event);
+			logger.onApplicationPreparedEvent(this, event);
 		}
 	}
 
@@ -190,11 +190,6 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor,
 			System.setProperty(CachedIntrospectionResults.IGNORE_BEANINFO_PROPERTY_NAME,
 					ignore.toString());
 		}
-	}
-
-	private void onApplicationPreparedEvent(ApplicationEvent event) {
-		this.logger.replayTo(ConfigFileApplicationListener.class);
-		addPostProcessors(((ApplicationPreparedEvent) event).getApplicationContext());
 	}
 
 	/**
@@ -238,7 +233,7 @@ public class ConfigFileApplicationListener implements EnvironmentPostProcessor,
 	 * Add appropriate post-processors to post-configure the property-sources.
 	 * @param context the context to configure
 	 */
-	protected void addPostProcessors(ConfigurableApplicationContext context) {
+	public void addPostProcessors(ConfigurableApplicationContext context) {
 		context.addBeanFactoryPostProcessor(
 				new PropertySourceOrderingPostProcessor(context));
 	}

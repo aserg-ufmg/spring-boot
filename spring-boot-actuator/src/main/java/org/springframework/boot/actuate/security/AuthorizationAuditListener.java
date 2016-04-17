@@ -16,10 +16,6 @@
 
 package org.springframework.boot.actuate.security;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.access.event.AbstractAuthorizationEvent;
 import org.springframework.security.access.event.AuthenticationCredentialsNotFoundEvent;
 import org.springframework.security.access.event.AuthorizationFailureEvent;
@@ -40,22 +36,6 @@ public class AuthorizationAuditListener extends AbstractAuthorizationAuditListen
 		else if (event instanceof AuthorizationFailureEvent) {
 			onAuthorizationFailureEvent((AuthorizationFailureEvent) event);
 		}
-	}
-
-	private void onAuthenticationCredentialsNotFoundEvent(
-			AuthenticationCredentialsNotFoundEvent event) {
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("type", event.getCredentialsNotFoundException().getClass().getName());
-		data.put("message", event.getCredentialsNotFoundException().getMessage());
-		publish(new AuditEvent("<unknown>", "AUTHENTICATION_FAILURE", data));
-	}
-
-	private void onAuthorizationFailureEvent(AuthorizationFailureEvent event) {
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("type", event.getAccessDeniedException().getClass().getName());
-		data.put("message", event.getAccessDeniedException().getMessage());
-		publish(new AuditEvent(event.getAuthentication().getName(),
-				"AUTHORIZATION_FAILURE", data));
 	}
 
 }

@@ -51,7 +51,7 @@ import org.springframework.util.Assert;
  * @since 1.1.0
  */
 @JsonInclude(Include.NON_EMPTY)
-public final class Health {
+public final class Health implements HealthInterface {
 
 	private final Status status;
 
@@ -67,23 +67,27 @@ public final class Health {
 		this.details = Collections.unmodifiableMap(builder.details);
 	}
 
-	/**
-	 * Return the status of the health.
-	 * @return the status (never {@code null})
+	/* (non-Javadoc)
+	 * @see org.springframework.boot.actuate.health.HealthInterface#getStatus()
 	 */
+	@Override
 	@JsonUnwrapped
 	public Status getStatus() {
 		return this.status;
 	}
 
-	/**
-	 * Return the details of the health.
-	 * @return the details (or an empty map)
+	/* (non-Javadoc)
+	 * @see org.springframework.boot.actuate.health.HealthInterface#getDetails()
 	 */
+	@Override
 	@JsonAnyGetter
 	public Map<String, Object> getDetails() {
 		return this.details;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.springframework.boot.actuate.health.HealthInterface#equals(java.lang.Object)
+	 */
 
 	@Override
 	public boolean equals(Object obj) {
@@ -97,12 +101,18 @@ public final class Health {
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.boot.actuate.health.HealthInterface#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		int hashCode = this.status.hashCode();
 		return 13 * hashCode + this.details.hashCode();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.springframework.boot.actuate.health.HealthInterface#toString()
+	 */
 	@Override
 	public String toString() {
 		return getStatus() + " " + getDetails();

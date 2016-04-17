@@ -37,7 +37,7 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Andy Wilkinson
  */
-class ServletComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
+class ServletComponentScanRegistrarRenamed implements ImportBeanDefinitionRegistrar {
 
 	private static final String BEAN_NAME = "servletComponentRegisteringPostProcessor";
 

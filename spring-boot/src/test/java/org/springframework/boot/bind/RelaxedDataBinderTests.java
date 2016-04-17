@@ -497,7 +497,7 @@ public class RelaxedDataBinderTests {
 		VanillaTarget target = new VanillaTarget();
 		RelaxedDataBinder binder = getBinder(target, null);
 		binder.setIgnoreUnknownFields(false);
-		binder.setIgnoreNestedProperties(true);
+		binder.setIgnoreNestedPropertiesRenamed(true);
 		BindingResult result = bind(binder, target,
 				"foo: bar\n" + "value: 123\n" + "nested.bar: spam");
 		assertThat(target.getValue()).isEqualTo(123);
@@ -510,7 +510,7 @@ public class RelaxedDataBinderTests {
 		VanillaTarget target = new VanillaTarget();
 		RelaxedDataBinder binder = getBinder(target, "foo");
 		binder.setIgnoreUnknownFields(false);
-		binder.setIgnoreNestedProperties(true);
+		binder.setIgnoreNestedPropertiesRenamed(true);
 		BindingResult result = bind(binder, target,
 				"foo.foo: bar\n" + "foo.value: 123\n" + "foo.nested.bar: spam");
 		assertThat(target.getValue()).isEqualTo(123);

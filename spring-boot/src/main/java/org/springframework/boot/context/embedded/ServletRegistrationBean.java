@@ -66,6 +66,8 @@ public class ServletRegistrationBean extends RegistrationBean {
 
 	private MultipartConfigElement multipartConfig;
 
+	private boolean enabled = true;
+
 	/**
 	 * Create a new {@link ServletRegistrationBean} instance.
 	 */
@@ -215,6 +217,22 @@ public class ServletRegistrationBean extends RegistrationBean {
 		if (this.multipartConfig != null) {
 			registration.setMultipartConfig(this.multipartConfig);
 		}
+	}
+
+	/**
+	 * Flag to indicate that the registration is enabled.
+	 * @param enabled the enabled to set
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	/**
+	 * Return if the registration is enabled.
+	 * @return if enabled (default {@code true})
+	 */
+	public boolean isEnabled() {
+		return this.enabled;
 	}
 
 }

@@ -16,6 +16,8 @@
 
 package org.springframework.boot.context.embedded;
 
+import org.springframework.util.ClassUtils;
+
 /**
  * Simple container-independent abstraction for compression configuration.
  *
@@ -76,5 +78,16 @@ public class Compression {
 
 	public void setExcludedUserAgents(String[] excludedUserAgents) {
 		this.excludedUserAgents = excludedUserAgents;
+	}
+
+	/**
+	 * Returns whether or not the JSP servlet should be registered with the embedded
+	 * container.
+	 * @param abstractConfigurableEmbeddedServletContainer TODO
+	 * @return {@code true} if the container should be registered, otherwise {@code false}
+	 */
+	public boolean shouldRegisterJspServlet(AbstractConfigurableEmbeddedServletContainer abstractConfigurableEmbeddedServletContainer) {
+		return abstractConfigurableEmbeddedServletContainer.jspServlet != null && abstractConfigurableEmbeddedServletContainer.jspServlet.getRegistered() && ClassUtils
+				.isPresent(abstractConfigurableEmbeddedServletContainer.jspServlet.getClassName(), abstractConfigurableEmbeddedServletContainer.getClass().getClassLoader());
 	}
 }

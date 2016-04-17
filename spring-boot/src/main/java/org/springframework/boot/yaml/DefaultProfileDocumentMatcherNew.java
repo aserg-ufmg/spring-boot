@@ -27,7 +27,7 @@ import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
  *
  * @author Dave Syer
  */
-public class DefaultProfileDocumentMatcher implements DocumentMatcher {
+public class DefaultProfileDocumentMatcherNew implements DocumentMatcher {
 
 	@Override
 	public MatchStatus matches(Properties properties) {

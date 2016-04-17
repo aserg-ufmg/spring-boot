@@ -28,7 +28,7 @@ import org.springframework.boot.ansi.AnsiOutput;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link ColorConverter}.
+ * Tests for {@link ColorConverterRenamed}.
  *
  * @author Vladimir Tsanev
  */
@@ -53,8 +53,8 @@ public class ColorConverterTests {
 		this.event = new TestLogEvent();
 	}
 
-	private ColorConverter newConverter(String styling) {
-		return ColorConverter.newInstance(null, new String[] { this.in, styling });
+	private ColorConverterRenamed newConverter(String styling) {
+		return ColorConverterRenamed.newInstance(null, new String[] { this.in, styling });
 	}
 
 	@Test

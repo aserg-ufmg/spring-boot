@@ -56,10 +56,10 @@ public class ParentContextCloserApplicationListener
 
 	@Override
 	public void onApplicationEvent(ParentContextAvailableEvent event) {
-		maybeInstallListenerInParent(event.getApplicationContext());
+		maybeInstallListenerInParentNew(event.getApplicationContext());
 	}
 
-	private void maybeInstallListenerInParent(ConfigurableApplicationContext child) {
+	private void maybeInstallListenerInParentNew(ConfigurableApplicationContext child) {
 		if (child == this.context) {
 			if (child.getParent() instanceof ConfigurableApplicationContext) {
 				ConfigurableApplicationContext parent = (ConfigurableApplicationContext) child

@@ -102,6 +102,8 @@ public class ErrorPageFilter extends AbstractConfigurableEmbeddedServletContaine
 
 	};
 
+	private String displayName;
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		this.delegate.init(filterConfig);
@@ -275,6 +277,15 @@ public class ErrorPageFilter extends AbstractConfigurableEmbeddedServletContaine
 
 	@Override
 	public void destroy() {
+	}
+
+	@Override
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDisplayName() {
+		return this.displayName;
 	}
 
 	private static class ErrorWrapperResponse extends HttpServletResponseWrapper {

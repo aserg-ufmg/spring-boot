@@ -74,7 +74,7 @@ public class RedisHealthIndicatorTests {
 		given(redisConnection.info()).willReturn(info);
 		RedisHealthIndicator healthIndicator = new RedisHealthIndicator(
 				redisConnectionFactory);
-		Health health = healthIndicator.health();
+		HealthInterface health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.UP);
 		assertThat(health.getDetails().get("version")).isEqualTo("2.8.9");
 		verify(redisConnectionFactory).getConnection();
@@ -91,7 +91,7 @@ public class RedisHealthIndicatorTests {
 				.willThrow(new RedisConnectionFailureException("Connection failed"));
 		RedisHealthIndicator healthIndicator = new RedisHealthIndicator(
 				redisConnectionFactory);
-		Health health = healthIndicator.health();
+		HealthInterface health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(Status.DOWN);
 		assertThat(((String) health.getDetails().get("error"))
 				.contains("Connection failed"));

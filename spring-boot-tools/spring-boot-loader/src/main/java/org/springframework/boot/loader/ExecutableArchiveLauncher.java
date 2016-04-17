@@ -33,8 +33,6 @@ import org.springframework.boot.loader.archive.Archive.EntryFilter;
  */
 public abstract class ExecutableArchiveLauncher extends Launcher {
 
-	private final Archive archive;
-
 	public ExecutableArchiveLauncher() {
 		try {
 			this.archive = createArchive();

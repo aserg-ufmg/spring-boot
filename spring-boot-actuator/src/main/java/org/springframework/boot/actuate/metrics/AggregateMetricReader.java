@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.actuate.metrics.aggregate;
+package org.springframework.boot.actuate.metrics;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.boot.actuate.metrics.Metric;
 import org.springframework.boot.actuate.metrics.reader.MetricReader;
 import org.springframework.boot.actuate.metrics.repository.InMemoryMetricRepository;
 import org.springframework.util.StringUtils;

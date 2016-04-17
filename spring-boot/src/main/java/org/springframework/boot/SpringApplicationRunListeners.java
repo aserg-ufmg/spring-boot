@@ -93,4 +93,23 @@ class SpringApplicationRunListeners {
 		}
 	}
 
+	void handleRunFailure(ConfigurableApplicationContext context, SpringApplication springApplication, Throwable exception) {
+		try {
+			try {
+				springApplication.handleExitCode(context, exception);
+				finished(context, exception);
+			}
+			finally {
+				springApplication.reportFailure(exception, context);
+				if (context != null) {
+					context.close();
+				}
+			}
+		}
+		catch (Exception ex) {
+			SpringApplication.logger.warn("Unable to close ApplicationContext", ex);
+		}
+		ReflectionUtils.rethrowRuntimeException(exception);
+	}
+
 }

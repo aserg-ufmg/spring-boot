@@ -298,7 +298,7 @@ public class JettyEmbeddedServletContainerFactory
 		if (isRegisterDefaultServlet()) {
 			addDefaultServlet(context);
 		}
-		if (shouldRegisterJspServlet()) {
+		if (compression.shouldRegisterJspServlet(this)) {
 			addJspServlet(context);
 		}
 		ServletContextInitializer[] initializersToUse = mergeInitializers(initializers);
